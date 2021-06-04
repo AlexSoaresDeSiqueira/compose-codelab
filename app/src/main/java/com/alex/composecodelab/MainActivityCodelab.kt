@@ -3,6 +3,9 @@ package com.alex.composecodelab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -80,8 +83,19 @@ fun Counter(count: Int, updateCount: (Int) -> Unit) {
 
 @Composable
 fun Greeting(name: String) {
+    val isSelectedState = remember {
+        mutableStateOf(false)
+    }
+    val backgroundColor = animateColorAsState(
+        targetValue = if (isSelectedState.value) Color.Red else Color.Transparent
+    )
+
     Surface(color = Color.Yellow) {
-        Text(text = "Hello $name!", modifier = Modifier.padding(24.dp))
+        Text(text = "Hello $name!",
+            modifier = Modifier
+                .padding(24.dp)
+                .background(color = backgroundColor.value)
+                .clickable { isSelectedState.value = !isSelectedState.value })
     }
 }
 
